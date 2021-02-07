@@ -36,6 +36,11 @@ app.get('/api/persons', (request, response) => {
     response.json(persons)
 })
 
+app.get('/', (request, response) => {
+    response.send(`
+    <p>Go to "/api/persons" for persons</p>`)
+})
+
 app.get('/info', (request, response) => {
     response.send(`
     <p>The phonebook has information for ${persons.length} people</p>
