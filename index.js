@@ -38,22 +38,24 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
-app.get('/api/persons', (request, response) => {
+app.get('/api/persons', (request, response, next) => {
     Person.find({}).then(persons => {
         response.json(persons)
     })
+    .catch(error => next(error))
 })
 
 app.get('/', (request, response) => {
     response.send(`<p>Go to "/api/persons" for persons</p>`)
 })
 
-app.get('/info', (request, response) => {
+app.get('/info', (request, response, next) => {
     Person.count().then(count => {
         response.send(`
         <p>The phonebook has information for ${count} people</p>
         <p>${new Date()}`)
     })
+    .catch(error => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
@@ -66,7 +68,7 @@ app.get('/api/persons/:id', (request, response, next) => {
     }).catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
     Person.findByIdAndDelete(request.params.id)
         .then(result => {
             response.status(204).end()
